@@ -7,20 +7,22 @@ if __name__ == "__main__":
     print("LOADING STATUS: Loading programs...")
     print()
     print("Checking dependencies:")
-    packages = ["numpy", "pandas","requests", "matplotlib"]
+    packages = ["numpy", "pandas", "requests", "matplotlib"]
     modules = {}
     errors = []
-    
     for package in packages:
         try:
             module = importlib.import_module(package)
             modules[package] = module
             if module.__name__ == "pandas":
-                print(f"[OK] {module.__name__} ({module.__version__}) - Data manipulation ready")
+                print(f"[OK] {module.__name__} ({module.__version__}) "
+                      f"- Data manipulation ready")
             elif module.__name__ == "requests":
-                print(f"[OK] {module.__name__} ({module.__version__}) - Network access ready")
+                print(f"[OK] {module.__name__} ({module.__version__}) "
+                      f"- Network access ready")
             elif module.__name__ == "matplotlib":
-                print(f"[OK] {module.__name__} ({module.__version__}) - Visualization ready")
+                print(f"[OK] {module.__name__} ({module.__version__}) "
+                      f"- Visualization ready")
         except (ImportError) as e:
             errors.append(f"[ERROR] {e}")
     if len(errors) > 0:
@@ -30,7 +32,8 @@ if __name__ == "__main__":
     print()
     print("Analyzing Matrix data...")
     try:
-        request = modules["requests"].get('https://randomuser.me/api/?results=1000')
+        request = (modules["requests"]
+                   .get('https://randomuser.me/api/?results=1000'))
         if request.status_code != 200:
             raise ValueError("Requests could not get data")
         print("Processing 1000 data points...")
@@ -38,13 +41,14 @@ if __name__ == "__main__":
         data = [sample["street"]["number"] for sample in samples["location"]]
         modules["matplotlib"] = importlib.import_module("matplotlib.pyplot")
         print("Generating visualization...")
-        plot = modules["matplotlib"].plot(modules["numpy"].arange(1, 1001, 1), data)
+        plot = (modules["matplotlib"]
+                .plot(modules["numpy"].arange(1, 1001, 1), data))
         modules["matplotlib"].title("Street Number Distribution")
         modules["matplotlib"].xlabel("Count")
         modules["matplotlib"].ylabel("Street Number")
         modules["matplotlib"].savefig(f"{sys.prefix}/_analysis.png")
         print()
         print("Analysis complete!")
-        print("Results saved to: matrix\_analysis.png}")
+        print("Results saved to: matrix\\_analysis.png}")
     except (ValueError, ConnectionError) as e:
         print(f"Error: {e}")

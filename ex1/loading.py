@@ -12,6 +12,9 @@ if __name__ == "__main__":
     errors = []
     for package in packages:
         try:
+            # importlib.import_module - Import a module dinamically
+            # The use of this method in this way, allows the program
+            # to detect if such dependencies were correctly installed
             module = importlib.import_module(package)
             modules[package] = module
             if module.__name__ == "pandas":
@@ -37,10 +40,13 @@ if __name__ == "__main__":
         if request.status_code != 200:
             raise ValueError("Requests could not get data")
         print("Processing 1000 data points...")
+        # Get 1000 random samples using requests
         samples = modules["pandas"].DataFrame(request.json()["results"])
+        # Filter to get specific desired data
         data = [sample["street"]["number"] for sample in samples["location"]]
         modules["matplotlib"] = importlib.import_module("matplotlib.pyplot")
         print("Generating visualization...")
+        # Creation of the plot (graphic)
         plot = (modules["matplotlib"]
                 .plot(modules["numpy"].arange(1, 1001, 1), data))
         modules["matplotlib"].title("Street Number Distribution")

@@ -4,7 +4,17 @@ import site
 
 
 if __name__ == "__main__":
+    # sys.prefix - A string giving the site-specific directory prefix where
+    #              the platform independent Python files are installed
+    # sys.base_prefix - Equivalent to prefix, but referring to the
+    #                   base Python installation.
+    #                   When running under virtual environment, prefix gets
+    #                   overwritten to the virtual environment prefix.
+    #                   base_prefix, conversely, does not change,
+    #                   and always points to the base Python installation
     if sys.prefix == sys.base_prefix:
+        # If prefix is the same as base_prefix, were not in a
+        # Virtual Environment
         print()
         print("MATRIX STATUS: You're still plugged in")
         print()
@@ -23,9 +33,15 @@ if __name__ == "__main__":
         print()
         print("Then run this program again.")
     else:
+        # sys.prefix, while inside a VE, is overwritten to the directory where
+        # the platform independent Python files are installed in that VE.
+        # With such information, we can know if we are inside a VE or not.
         print()
         print("MATRIX STATUS: Welcome to the construct")
         print()
+        # sys.executable - A string giving the absolute path of the executable
+        #                  binary for the Python interpreter,
+        #                  on systems where this makes sense.
         print(f"Current Python: {sys.executable}")
         print(f"Virtual Environment: {os.path.basename(sys.prefix)}")
         print(f"Environment Path: {sys.prefix}")
@@ -34,5 +50,12 @@ if __name__ == "__main__":
         print("Safe to install packages without affecting")
         print("the global system.")
         print()
+        # site.getsitepackages() - returns a list of directories where Python
+        #                          usually installs non-specific user packages.
+        #                          In other words, these are global paths
+        #                          where Python looks for packages
+        #                          installed by pip
+        # Getting the first result on that list, [0],
+        # gets the package installation path
         print("Package installation path:")
         print(site.getsitepackages()[0])
